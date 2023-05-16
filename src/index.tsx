@@ -32,33 +32,32 @@ export default function Command(props: LaunchProps<{ arguments: PasswordArgument
     Clipboard.copy(password);
     showHUD("Password has been copied to the clipboard 😄");
   };
-  // const colors = ["Blue","Green","Magenta","Orange","Purple","Red","Yellow","PrimaryText","SecondaryText"];
 
   return (
     <List>
-      {passwords.map((p, index) => {
-        const words = p.plaintext.split(" ");
-        return (
-          <List.Item
-            key={index}
-            icon={Icon.Key}
-            title={`${p.password}`}
-            subtitle={`Strength: ${p.strength}/4`}
-            accessories={[
-              { icon: Icon.Eye },
-              ...words.map((word, i) => ({
-                tag: { value: word },
-                tooltip: "Tag with tooltip",
-              })),
-            ]}
-            actions={
-              <ActionPanel title="Copy Password">
-                <Action title={`Copy Password: ${p.password}`} onAction={() => handleCopyPassword(p.password)} />
-              </ActionPanel>
-            }
-          />
-        );
-      })}
+      <List.Section title={`Results：${passwords.length}`}>
+        {passwords.map((p, index) => {
+          const words = p.plaintext.split(" ");
+          return (
+            <List.Item
+              key={index}
+              icon={Icon.Key}
+              title={{ value: p.password, tooltip: p.plaintext }}
+              accessories={[
+                { icon: Icon.Eye },
+                ...words.map((word, i) => ({
+                  tag: { value: word },
+                })),
+              ]}
+              actions={
+                <ActionPanel title="Copy Password">
+                  <Action title={`Copy Password: ${p.password}`} onAction={() => handleCopyPassword(p.password)} />
+                </ActionPanel>
+              }
+            />
+          );
+        })}
+      </List.Section>
     </List>
   );
 }
