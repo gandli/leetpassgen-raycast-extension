@@ -1,4 +1,4 @@
-import { LaunchProps, Color, Icon, List, Clipboard, Action, ActionPanel, showHUD } from "@raycast/api";
+import { LaunchProps, Icon, List, Clipboard, Action, ActionPanel, showHUD } from "@raycast/api";
 import { useState, useEffect } from "react";
 import generatePassword, { PasswordData } from "./generatePassword";
 
@@ -29,29 +29,42 @@ export default function Command(props: LaunchProps<{ arguments: PasswordArgument
   }, [wordCount, passwordCount]);
 
   const handleCopyPassword = (password: string) => {
-    Clipboard.copy(password);
+    Clipboard.copy(password, { transient: true });
     showHUD("Password has been copied to the clipboard 😄");
   };
 
   return (
-    <List>
-      <List.Section title={`Results：${passwords.length}`}>
+    <List isLoading={passwords.length === 0} isShowingDetail>
+      <List.Section title="Results" subtitle={`${passwords.length}`}>
         {passwords.map((p, index) => {
           const words = p.plaintext.split(" ");
+          const wordCount = words.length;
+          const passwordLength = p.password.length;
           return (
             <List.Item
               key={index}
               icon={Icon.Key}
               title={{ value: p.password, tooltip: p.plaintext }}
-              accessories={[
-                { icon: Icon.Eye },
-                ...words.map((word, i) => ({
-                  tag: { value: word },
-                })),
-              ]}
+              detail={
+                <List.Item.Detail
+                  markdown={words.map((word) => `\`${word}\``).join("\u00A0\u00A0\u00A0")}
+                  metadata={
+                    <List.Item.Detail.Metadata>
+                      <List.Item.Detail.Metadata.Label title="Word Count" text={wordCount.toString()} />
+                      <List.Item.Detail.Metadata.Separator />
+                      <List.Item.Detail.Metadata.Label title="Password Length" text={passwordLength.toString()} />
+                      <List.Item.Detail.Metadata.Separator />
+                    </List.Item.Detail.Metadata>
+                  }
+                />
+              }
               actions={
-                <ActionPanel title="Copy Password">
-                  <Action title={`Copy Password: ${p.password}`} onAction={() => handleCopyPassword(p.password)} />
+                <ActionPanel>
+                  <Action
+                    title="Copy Password"
+                    icon={Icon.CopyClipboard}
+                    onAction={() => handleCopyPassword(p.password)}
+                  />
                 </ActionPanel>
               }
             />
