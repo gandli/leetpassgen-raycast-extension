@@ -1,6 +1,6 @@
 # Memorable Password Generator Extension for Raycast
 
-![screenshot](./metadata/memorable-generate-password-04.png)
+![screenshot](./metadata/memorable-generate-password-1.png)
 
 Generate Password is an extension for Raycast that allows you to generate strong and memorable passwords.
 
