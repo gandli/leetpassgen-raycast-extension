@@ -50,7 +50,7 @@ z        | 2        |
 
 ### Store
 
-[Memorable Password Generator Extension for Raycast]()
+<a title="Install memorable-generate-password Raycast Extension" href="https://www.raycast.com/gandli/memorable-generate-password" data-immersive-translate-effect="1" data-immersive_translate_walked="32a30061-b85d-4a12-95ac-24984f066896"><img src="https://www.raycast.com/gandli/memorable-generate-password/install_button@2x.png" height="64" alt="" style="height: 64px;"></a>
 
 ### Manual
 
