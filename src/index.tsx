@@ -1,5 +1,5 @@
-import { LaunchProps, Icon, List, Clipboard, Action, ActionPanel, popToRoot, showToast, Toast } from "@raycast/api";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
+import { LaunchProps, List, Action, ActionPanel, Icon, showToast, Toast, popToRoot, Clipboard } from "@raycast/api";
 import generatePassword, { PasswordData } from "./generatePassword";
 
 interface PasswordArguments {
@@ -12,15 +12,10 @@ const DEFAULT_PASSWORD_COUNT = 9;
 const MAX_COUNT = 99;
 
 export default function Command(props: LaunchProps<{ arguments: PasswordArguments }>) {
-  // Assigning command arguments to new variables to avoid reassignment within the component.
   const wordCountArg = props.arguments.wordCount;
   const passwordCountArg = props.arguments.passwordCount;
-
-  // State to hold the generated passwords.
   const [passwords, setPasswords] = useState<PasswordData[]>([]);
 
-  // Function to parse string arguments to numbers.
-  // If argument is greater than MAX_COUNT, MAX_COUNT is used instead.
   const parseNumber = (value: string, defaultValue: number) => {
     let parsedValue = parseInt(value);
     if (parsedValue > MAX_COUNT) {
@@ -31,18 +26,19 @@ export default function Command(props: LaunchProps<{ arguments: PasswordArgument
   };
 
   useEffect(() => {
-    const fetchData = async () => {
-      const validWordCount = parseNumber(wordCountArg, DEFAULT_WORD_COUNT);
-      const validPasswordCount = parseNumber(passwordCountArg, DEFAULT_PASSWORD_COUNT);
+    const validWordCount = parseNumber(wordCountArg, DEFAULT_WORD_COUNT);
+    const validPasswordCount = parseNumber(passwordCountArg, DEFAULT_PASSWORD_COUNT);
 
-      // Generate passwords and set them in state.
-      const passwords = await generatePassword(validWordCount, validPasswordCount);
-      setPasswords(passwords);
+    const passwordStream = generatePassword(validWordCount, validPasswordCount);
+    passwordStream.on("data", (passwordData: PasswordData) => {
+      setPasswords((passwords) => [...passwords, passwordData]);
+    });
+
+    return () => {
+      passwordStream.destroy();
     };
-    fetchData();
   }, [wordCountArg, passwordCountArg]);
 
-  // Function to handle password copy action.
   const handleCopyPassword = async (password: string) => {
     Clipboard.copy(password, { transient: true });
     await showToast(Toast.Style.Success, "Password has been copied to the clipboard 😄");
@@ -57,7 +53,6 @@ export default function Command(props: LaunchProps<{ arguments: PasswordArgument
           const wordCount = words.length;
           const passwordLength = p.password.length;
 
-          // Rendering each password with its associated details and actions.
           return (
             <List.Item
               key={index}

@@ -2,6 +2,7 @@ import fs from "fs";
 import { shuffle } from "lodash";
 import { resolve } from "path";
 import { environment } from "@raycast/api";
+import { Readable } from 'stream';
 
 // Load the word list from file
 const filePath = resolve(environment.assetsPath, "The_Oxford_3000.txt");
@@ -49,39 +50,56 @@ const evaluatePasswordStrength = (password: string): number => {
   return strengthRules.reduce((strength, rule) => (rule.test(password) ? strength + 1 : strength), 0);
 };
 
-// Password generation function
-const generatePassword = async (
-  wordCount: number,
-  passwordCount: number,
-  maxIterations = 1000
-): Promise<PasswordData[]> => {
-  const passwordData: PasswordData[] = [];
-  for (let c = 0; c < passwordCount; c++) {
-    let password = "";
-    let plaintext = "";
-    let iterationCount = 0;
+// Generate a single password
+const generateSinglePassword = (wordCount: number, maxIterations = 1000): PasswordData | null => {
+  const wordLength = words.length;
+  let password = "";
+  let plaintext = "";
+  let iterationCount = 0;
 
-    while (iterationCount < maxIterations) {
-      plaintext = shuffle(words).slice(0, wordCount).join(" ");
+  while (iterationCount < maxIterations) {
+    const indices = Array.from({ length: wordCount }, () => Math.floor(Math.random() * wordLength));
+    plaintext = indices.map(index => words[index]).join(" ");
 
-      password = Array.from(plaintext)
-        .map((letter) => shuffle(leetRules[letter] || [letter])[0])
-        .join("");
-
-      if (evaluatePasswordStrength(password) >= 4) {
-        break;
-      }
-
-      password = "";
-      iterationCount++;
-    }
+    password = plaintext
+      .split('')
+      .map(char => shuffle(leetRules[char.toLowerCase()] || [char])[0])
+      .join("");
 
     const strength = evaluatePasswordStrength(password);
+    if (strength >= 4) {
+      return { password: password.replace(/ /g, "-"), plaintext, strength };
+    }
 
-    passwordData.push({ password: password.replace(/ /g, "-"), plaintext, strength });
+    password = "";
+    iterationCount++;
   }
 
-  return passwordData;
+  return null; // Unable to generate a password
 };
 
-export default generatePassword;
+// Password generator function
+async function* passwordGenerator(wordCount: number, passwordCount: number, maxIterations = 1000) {
+  let generatedCount = 0;
+
+  while (generatedCount < passwordCount) {
+    const batchCount = Math.min(passwordCount - generatedCount, 100); // Adjust the batch size as needed
+    const passwords: PasswordData[] = [];
+
+    for (let i = 0; i < batchCount; i++) {
+      const password = generateSinglePassword(wordCount, maxIterations);
+      if (password) {
+        passwords.push(password);
+      }
+    }
+
+    for (const password of passwords) {
+      yield password;
+      generatedCount++;
+    }
+  }
+}
+
+export default function generatePassword(wordCount: number, passwordCount: number, maxIterations = 1000): Readable {
+  return Readable.from(passwordGenerator(wordCount, passwordCount, maxIterations));
+}
