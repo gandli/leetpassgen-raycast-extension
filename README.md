@@ -44,7 +44,7 @@ z        | 2        |
 ## Features
 
 - [x] Generate multiple passwords with customizable options.
-- [ ] Write the generated word group into a sentence that is smooth, grammatical and meaningful.
+- [ ] Combine the generated words into a sentence that is fluent, grammatical, meaningful, and logical.
 
 ## Installation
 
