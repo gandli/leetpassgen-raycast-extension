@@ -55,8 +55,8 @@ z        | 2        |
 ### Manual
 
 ```shell
-git clone https://github.com/gandli/generate-password-raycast-extension
-cd generate-password-raycast-extension
+git clone https://github.com/gandli/Memorable-Password-Generator
+cd Memorable-Password-Generator
 npm install && npm run dev
 ```
 
@@ -78,7 +78,7 @@ gandli
 
 ## GitHub
 
-[GitHub Repository](https://github.com/gandli/generate-password-raycast-extension)
+[GitHub Repository](https://github.com/gandli/Memorable-Password-Generator)
 
 🐞🛠️ Feel free to contribute, report issues, or suggest improvements on GitHub.
 
