@@ -1,16 +1,16 @@
-# Memorable Password Generator Extension for Raycast
+# Leetspeak Password Generator Extension for Raycast
 
-Generate Password is an extension for Raycast that allows you to generate strong and memorable passwords.
+Generate Password is an extension for Raycast that allows you to generate strong and leetspeak passwords.
 
-![screenshot](./metadata/memorable-generate-password-1.png)
+![screenshot](./metadata/leetspeak-generate-password-1.png)
 
 During the process of designing and generating passwords, we aim to balance two main factors: memorability and robustness.
 
-1. **Memorability**: A memorable password means that it is easy for users to remember without the need to write it down or rely on a password manager. To make passwords more memorable, we can use techniques such as using phrases or combinations of related words, such as using the Oxford 3000 word list. This approach generates passwords that are easy to remember because they are composed of actual, meaningful words.
+1. **Memorability**: A leetspeak password means that it is easy for users to remember without the need to write it down or rely on a password manager. To make passwords more leetspeak, we can use techniques such as using phrases or combinations of related words, such as using the Oxford 3000 word list. This approach generates passwords that are easy to remember because they are composed of actual, meaningful words.
 
 2. **Robustness**: A robust password should be sufficiently complex to resist guessing or brute-force attacks. This typically means that passwords should be long enough and include a variety of characters, such as uppercase and lowercase letters, numbers, and symbols. For example, we can enhance password robustness by using Leetspeak rules and randomly selecting symbols.
 
-However, memorability and robustness are often trade-offs: a highly robust password may be difficult to remember, while an easily memorable password may lack robustness. This is why it is important to find a balance between these two factors when designing a password generation strategy.
+However, memorability and robustness are often trade-offs: a highly robust password may be difficult to remember, while an easily leetspeak password may lack robustness. This is why it is important to find a balance between these two factors when designing a password generation strategy.
 
 ## The Oxford 3000
 
@@ -50,13 +50,13 @@ z        | 2        |
 
 ### Store
 
-<a title="Install memorable-generate-password Raycast Extension" href="https://www.raycast.com/gandli/memorable-generate-password" data-immersive-translate-effect="1" data-immersive_translate_walked="32a30061-b85d-4a12-95ac-24984f066896"><img src="https://www.raycast.com/gandli/memorable-generate-password/install_button@2x.png" height="64" alt="" style="height: 64px;"></a>
+<a title="Install Leetspeak Password Generator Raycast Extension" href="https://www.raycast.com/gandli/leetspeak-generate-password" data-immersive-translate-effect="1" data-immersive_translate_walked="32a30061-b85d-4a12-95ac-24984f066896"><img src="https://www.raycast.com/gandli/leetspeak-generate-password/install_button@2x.png" height="64" alt="" style="height: 64px;"></a>
 
 ### Manual
 
 ```shell
-git clone https://github.com/gandli/Memorable-Password-Generator
-cd Memorable-Password-Generator
+git clone https://github.com/gandli/Leetspeak-Password-Generator
+cd Leetspeak-Password-Generator
 npm install && npm run dev
 ```
 
@@ -78,7 +78,7 @@ gandli
 
 ## GitHub
 
-[GitHub Repository](https://github.com/gandli/Memorable-Password-Generator)
+[GitHub Repository](https://github.com/gandli/Leetspeak-Password-Generator)
 
 🐞🛠️ Feel free to contribute, report issues, or suggest improvements on GitHub.
 
